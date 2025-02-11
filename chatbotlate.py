@@ -4,7 +4,12 @@ import openai
 app = Flask(__name__)
 
 # OpenAI API Key
-client = openai.OpenAI(api_key="OPENAI_API_KEY")
+API_KEY = os.getenv("OPENAI_API_KEY")
+
+if not API_KEY:
+    raise ValueError("ERROR: OPENAI_API_KEY is not set")
+
+client = openai.OpenAI(api_key=API_KEY)
 
 # 存储对话历史
 chat_history = []
