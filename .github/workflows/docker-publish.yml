@@ -21,6 +21,11 @@ jobs:
 
       - name: Build and tag Docker image
         run: |
+          docker build --build-arg OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }} -t windy111/genai-app:latest .
+
+
+      - name: Build and tag Docker image
+        run: |
           docker build -t windy111/genai-app:latest .
       
       - name: Push Docker image to Docker Hub
