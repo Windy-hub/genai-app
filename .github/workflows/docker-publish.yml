@@ -42,6 +42,9 @@ jobs:
             docker stop genai-app || true
             sleep 2  # 等待端口释放
             docker rm -f genai-app || true  # 强制删除，避免端口被占用
+            docker ps -a | grep Exited | awk '{print $1}' | xargs docker rm -f || true  # 只删除已退出的容器
+            docker rmi $(docker images -q --filter "dangling=true") -f || true  # 只删除悬空镜像
+            docker image prune -a -f || true  # 彻底清理磁盘空间
             docker run -d --restart=always --name genai-app -p 5001:5001 \
               -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" \
               windy111/genai-app:latest
