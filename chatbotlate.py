@@ -163,6 +163,7 @@ def chat():
             Ensure users input a full voucher name before proceeding.
             Always clarify when users ask about unavailable voucher types.
             Maintain a friendly but professional tone at all times.
+            Ensure responses are concise and do not exceed 50 words.
             """
 
 
