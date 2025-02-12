@@ -40,7 +40,8 @@ jobs:
           script: |
             docker pull windy111/genai-app:latest
             docker stop genai-app || true
-            docker rm genai-app || true
+            sleep 2  # 等待端口释放
+            docker rm -f genai-app || true  # 强制删除，避免端口被占用
             docker run -d --restart=always -p 5001:5001 \
               -e OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}" \
               windy111/genai-app:latest
