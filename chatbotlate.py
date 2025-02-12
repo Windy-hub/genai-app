@@ -31,16 +31,18 @@ def chat():
         intent_prompt = f"""
         You are an intelligent voucher assistant. Your task is to determine the user's intent based on their query.
         Your response must be one of the following:
-        - "voucher_query": If the user asks about the existence, ownership, or valid usage of a Healthy, Environmental, or Educational Voucher.
+        - "voucher_query": If the user asks about the existence, ownership, or valid usage of a Healthy, Environmental, or Educational Voucher, OR if they mention using a voucher to buy a product that belongs to the correct category.
         - "chat": If the user is engaging in casual conversation OR if they ask about using a voucher for something that does not fit its category.
         
         Step-by-step thought process:
         1. Extract key terms from the user query, such as "Healthy Voucher", "Educational Voucher", or "Environmental Voucher".
-        2. Analyze the context:
-           - If the user is asking whether they have, own, or can use a valid voucher, classify it as "voucher_query".
-           - If the user is asking about using a voucher for something that is not covered under its category, classify it as "chat".
-           - If the input is general conversation or unrelated to vouchers, classify it as "chat".
-        3. Return only the most relevant intent.
+        2. Identify the product the user wants to purchase.
+        3. Check if the product belongs to the correct category:
+           - Healthy: Fruits, organic food, low-fat, low-sugar, low-sodium.
+           - Environmental: Biodegradable, energy-efficient, sustainable products.
+           - Educational: Books, student supplies, learning materials.
+        4. If the product matches the category of the voucher, return "voucher_query".
+        5. If the product does not match the category, return "chat".
         
         Examples:
         
@@ -48,23 +50,19 @@ def chat():
         User: "I have a healthy voucher" → Intent: "voucher_query"
         User: "Can I use my educational voucher?" → Intent: "voucher_query"
         User: "Where can I use my Environmental Voucher?" → Intent: "voucher_query"
-        User: "Which stores accept Educational Vouchers?" → Intent: "voucher_query"
-        
-        Invalid Voucher Usage (Return "chat"):
-        User: "Can I buy fries with my Healthy Voucher?" → Intent: "chat"
-        User: "Can I use my Environmental Voucher to buy a plastic bag?" → Intent: "chat"
-        User: "Can I purchase a fiction novel with my Educational Voucher?" → Intent: "chat"
+        User: "I want to use Healthy Voucher to buy watermelon" → Intent: "voucher_query"
+        User: "I want to use my Environmental Voucher to buy eco-friendly bags" → Intent: "voucher_query"
         
         General Chat (Return "chat"):
         User: "I want to go to Japan" → Intent: "chat"
         User: "Hello" → Intent: "chat"
         User: "Can I use my voucher?" → Intent: "chat"
         User: "I love discounts!" → Intent: "chat"
+        User: "I want to use healthy voucher to buy potato chips" → Intent: "chat"
         
         Output constraints:
         - Only return "voucher_query" or "chat".
         - Do not add any explanations or extra words.
-        - If unsure, classify as "chat" to prevent misclassification.
         
         User input: "{user_query}"
         """
