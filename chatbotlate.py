@@ -27,29 +27,49 @@ def chat():
         return jsonify({"error": "Message cannot be empty"}), 400
 
     try:
-        # **第一步：意图识别**
+        # **First step: intent recognition**
         intent_prompt = f"""
-        You are an intelligent voucher assistant. Your task is to determine the user's intent and return one of the following:
-        - "voucher_query": If the user mentions they HAVE, OWN, ASK about healthy, environmental, educational voucher
-        - "chat": If the user is engaging in casual conversation，If the user asks about vouchers in general (e.g., "Can I use my voucher?", "I have an electronic voucher?"
-
+        You are an intelligent voucher assistant. Your task is to determine the user's intent based on their query.
+        Your response must be one of the following:
+        - "voucher_query": If the user asks about the existence, ownership, or valid usage of a Healthy, Environmental, or Educational Voucher.
+        - "chat": If the user is engaging in casual conversation OR if they ask about using a voucher for something that does not fit its category.
+        
+        Step-by-step thought process:
+        1. Extract key terms from the user query, such as "Healthy Voucher", "Educational Voucher", or "Environmental Voucher".
+        2. Analyze the context:
+           - If the user is asking whether they have, own, or can use a valid voucher, classify it as "voucher_query".
+           - If the user is asking about using a voucher for something that is not covered under its category, classify it as "chat".
+           - If the input is general conversation or unrelated to vouchers, classify it as "chat".
+        3. Return only the most relevant intent.
+        
         Examples:
-        User: "I have a healthy voucher" → Intent: **"voucher_query"**
-        User: "I own an environmental voucher" → Intent: **"voucher_query"**
-        User: "Can I use my educational voucher?" → Intent: **"voucher_query"**
-
+        
+        Voucher Queries (Return "voucher_query"):
+        User: "I have a healthy voucher" → Intent: "voucher_query"
+        User: "Can I use my educational voucher?" → Intent: "voucher_query"
+        User: "Where can I use my Environmental Voucher?" → Intent: "voucher_query"
+        User: "Which stores accept Educational Vouchers?" → Intent: "voucher_query"
+        
+        Invalid Voucher Usage (Return "chat"):
+        User: "Can I buy fries with my Healthy Voucher?" → Intent: "chat"
+        User: "Can I use my Environmental Voucher to buy a plastic bag?" → Intent: "chat"
+        User: "Can I purchase a fiction novel with my Educational Voucher?" → Intent: "chat"
+        
+        General Chat (Return "chat"):
         User: "I want to go to Japan" → Intent: "chat"
         User: "Hello" → Intent: "chat"
-        User: "How's the weather today?" → Intent: "chat"
         User: "Can I use my voucher?" → Intent: "chat"
-        User: "I want to keep fit" → Intent: "chat"
-        User: "I have an electronic voucher." → Intent: "chat"
-
-        ⚠️ **Only return "voucher_query" or "chat", do NOT add any extra words.** ⚠️
-
+        User: "I love discounts!" → Intent: "chat"
+        
+        Output constraints:
+        - Only return "voucher_query" or "chat".
+        - Do not add any explanations or extra words.
+        - If unsure, classify as "chat" to prevent misclassification.
+        
         User input: "{user_query}"
         """
 
+        
         intent_response = client.chat.completions.create(
             model="gpt-4o",
             messages=[{"role": "user", "content": intent_prompt}],
