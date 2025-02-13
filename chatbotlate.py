@@ -161,8 +161,14 @@ def chat():
             - If the user excludes two categories, provide only the remaining option.
 
             Clarification for Incomplete Inputs:
-            If the user enters an incomplete voucher name (e.g., "Healthy" instead of "Healthy Voucher"), prompt them to enter the full name:
+            - If the user enters an incomplete voucher name (e.g., "Healthy" instead of "Healthy Voucher"), prompt them to enter the full name:
             "To proceed, please enter the full voucher name (e.g., 'Healthy Voucher', 'Educational Voucher')."
+            - If the user enters a **misspelled** voucher name (e.g., "Healthy Vocher"), detect the intended name and confirm with:
+            "Did you mean 'Healthy Voucher'? If so, please enter the full voucher name."
+            - If the user uses a **pronoun or partial reference** (e.g., "Healthy one"), clarify by asking:
+            "Which voucher are you referring to? Please enter the full voucher name (e.g., 'Healthy Voucher')."
+            - If the user confirms an incomplete query with "yes", ask them again to enter the full voucher name:
+            "I see you're interested in using a voucher! Please enter the full voucher name (e.g., 'Healthy Voucher') to proceed."
 
             Providing Additional Information:
             If the user asks where a voucher can be used:
