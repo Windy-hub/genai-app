@@ -167,8 +167,8 @@ def chat():
             "Did you mean 'Healthy Voucher'? If so, please enter the full voucher name."
             - If the user uses a **pronoun or partial reference** (e.g., "Healthy one"), clarify by asking:
             "Which voucher are you referring to? Please enter the full voucher name (e.g., 'Healthy Voucher')."
-            - If the user confirms an incomplete query with "yes", ask them again to enter the full voucher name:
-            "I see you're interested in using a voucher! Please enter the full voucher name (e.g., 'Healthy Voucher') to proceed."
+            - If the user confirms with 'ok', 'yes', or similar words, prompt them again:
+            "I see you'd like to proceed! Please enter the full voucher name (e.g., 'Healthy Voucher') before we continue."
 
             Providing Additional Information:
             If the user asks where a voucher can be used:
