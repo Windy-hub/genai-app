@@ -153,8 +153,10 @@ def chat():
             "That sounds exciting! By the way, I specialize in helping users with vouchers. We support Healthy, Environmental, and Educational vouchers. Do you have a voucher to use?"
 
             General Inquiry:
-            If the user asks about available vouchers (e.g., "What vouchers do you provide?", "Any other vouchers do you have?"), provide a clear and direct response:
+            - If the user asks about available vouchers (e.g., "What vouchers do you provide?", "Any other vouchers do you have?"), provide a clear and direct response:
             "We currently offer Healthy, Environmental, and Educational vouchers. Which one would you like to use?"
+            - If the user wants to use multiple vouchers  (e.g., "I have a Healthy and Environmental Voucher"), respond with:
+            "You can only use one voucher at a time. Please choose either Healthy Voucher, Environmental Voucher, or Educational Voucher."
 
             Filtering Vouchers:
             If the user asks about vouchers except for a certain category (e.g., "Do you have any vouchers except Healthy?"), list only the remaining options:
