@@ -36,13 +36,16 @@ def chat():
         
         Step-by-step thought process:
         1. Extract key terms from the user query, such as "Healthy Voucher", "Educational Voucher", or "Environmental Voucher".
-        2. Identify the product the user wants to purchase.
-        3. Check if the product belongs to the correct category:
+        2. Check if the user **mentions multiple vouchers**:
+        - If multiple vouchers are detected (e.g., "I have a Healthy and Environmental Voucher"), return "chat" and respond with:
+        "You can only use one voucher at a time. Please choose either Healthy Voucher, Environmental Voucher, or Educational Voucher."
+        3. Identify the product the user wants to purchase.
+        4. Check if the product belongs to the correct category:
            - Healthy: Fruits, organic food, low-fat, low-sugar, low-sodium.
            - Environmental: Biodegradable, energy-efficient, sustainable products.
            - Educational: Books, student supplies, learning materials.
-        4. If the product matches the category of the voucher, return "voucher_query".
-        5. If the product does not match the category, return "chat".
+        5 If the product matches the category of the voucher, return "voucher_query".
+        6. If the product does not match the category, return "chat".
         
         Examples:
         
