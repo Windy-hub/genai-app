@@ -12,14 +12,14 @@ if not API_KEY:
 
 client = openai.OpenAI(api_key=API_KEY)
 
-# 存储对话历史
+# store chat history
 chat_history = []
 
 @app.route("/chat", methods=["POST"])
 def chat():
     global chat_history
 
-    # 获取用户输入
+    # get user input
     user_data = request.get_json()
     user_query = user_data.get("message", "")
 
@@ -79,7 +79,7 @@ def chat():
         intent = intent_response.choices[0].message.content.strip()
 
         if intent == "voucher_query":
-            # **产品分类**
+            # **product classifcation**
             classification_prompt = f"""
             Please classify the given product into one of the following categories:
             - Healthy: Healthy query such as fruits, low-fat food, low-sugar, low-sodium.
@@ -97,14 +97,14 @@ def chat():
             )
             label = response.choices[0].message.content.strip()
 
-            # **确保返回的 label 在有效类别范围内**
+            # Make sure that the label returned is within a valid category range
             valid_labels = {"Healthy", "Environmental", "Educational"}
             if label not in valid_labels:
-                label = "None"  # 防止 AI 产生未定义类别
+                label = "None"  
 
             return jsonify({"intent": "voucher_query", "label": label})
 
-        else:  # **闲聊模式**
+        else:  # chat
             chat_history.append({"role": "user", "content": user_query})
 
             chat_prompt = """
@@ -196,7 +196,7 @@ def chat():
             """
 
 
-            # **加入历史对话**
+            # add chat history
             messages = [{"role": "system", "content": chat_prompt}] + chat_history
 
             response = client.chat.completions.create(
@@ -206,7 +206,7 @@ def chat():
             )
             reply = response.choices[0].message.content.strip()
 
-            # **存储 AI 回复**
+            # store response
             chat_history.append({"role": "assistant", "content": reply})
 
             return jsonify({"intent": "chat", "response": reply})
